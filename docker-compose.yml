@@ -1,0 +1,26 @@
+services:
+  dbms-seminar-db:
+    image: postgres:17.4-alpine
+    container_name: dbms-seminar-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - dbms-seminar-data:/var/lib/postgresql/data
+
+  dbms-seminar-redis:
+    image: redis:7.4.0
+    container_name: dbms-seminar-redis
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+    ports:
+      - '6379:6379'
+    volumes:
+      - dbms-seminar-session:/data
+
+volumes:
+  dbms-seminar-data:
+  dbms-seminar-session:
+
