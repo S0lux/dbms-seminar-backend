@@ -17,7 +17,7 @@ export class UserEntity {
   @PrimaryKey({ type: 'uuid' })
   id: string & Opt = uuidv4();
 
-  @Property({ name: 'email', unique: true, hidden: true })
+  @Property({ name: 'email', unique: true })
   @IsEmail()
   email!: string;
 

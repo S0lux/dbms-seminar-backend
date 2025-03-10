@@ -21,6 +21,11 @@ async function bootstrap() {
     prefix: 'session:',
   });
 
+  app.enableCors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+  });
+
   app.enableVersioning();
 
   app.use(
@@ -40,7 +45,7 @@ async function bootstrap() {
   app.use(passport.initialize());
   app.use(passport.session());
 
-  await app.listen(3000);
+  await app.listen(8080);
 }
 
 bootstrap();
