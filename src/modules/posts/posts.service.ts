@@ -12,6 +12,7 @@ import { VoteError } from '../votes/errors/base-vote.error';
 import { PostNotVotedError } from './errors/post-not-voted-error';
 import { UpdatePostRequestDto } from './dtos/update-post-request.dto';
 import { QueryPostRequestDto } from './dtos/query-post-request.dto';
+import { populate } from 'dotenv';
 
 @Injectable()
 export class PostsService {
@@ -42,6 +43,19 @@ export class PostsService {
     } catch (error) {
       console.error(error);
       return err(new PostError('An unexpected error occurred.'));
+    }
+  }
+
+  public async getPostById(id: string): Promise<Result<PostEntity, PostError>> {
+    try {
+      const result = await this.postsRepository.findOne(
+        { id: id },
+        { populate: ['author', 'votes'] },
+      );
+      return ok(result);
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+      return err(new PostError('Failed to fetch posts'));
     }
   }
 
@@ -172,7 +186,7 @@ export class PostsService {
       const posts = await this.postsRepository.find(filter, {
         limit: limit + 1,
         orderBy: { postedAt: 'DESC', id: 'DESC' },
-        populate: ['author'],
+        populate: ['author', 'votes'],
       });
 
       const hasMore = posts.length > limit;

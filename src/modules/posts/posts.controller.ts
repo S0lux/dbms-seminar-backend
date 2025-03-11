@@ -53,6 +53,14 @@ export class PostsController {
       });
   }
 
+  @Get(':id')
+  public async getPostById(@Param('id') id: string, @Res() res: Response) {
+    const result = await this.postsService.getPostById(id);
+
+    if (result.isOk()) return res.status(HttpStatus.OK).json(result.value);
+    else return res.status(result.error.statusCode).json(result.error.toJSON());
+  }
+
   @UseGuards(AuthenticatedOnly)
   @Post()
   public async createPost(

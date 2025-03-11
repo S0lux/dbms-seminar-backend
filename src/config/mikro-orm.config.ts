@@ -14,6 +14,7 @@ const ormConfig: Options = {
   baseDir: process.cwd(),
   driver: PostgreSqlDriver,
   metadataProvider: TsMorphMetadataProvider,
+  debug: true,
 };
 
 export default ormConfig;
